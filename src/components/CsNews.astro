@@ -1,0 +1,38 @@
+---
+
+const res = await fetch(`http://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730&count=8&maxlength=300&format=json&key=36F973D22488B43ED55D9E1719A1F3E3`);
+const data = await res.json();
+const news = data.appnews.newsitems;
+
+
+
+
+
+---
+
+
+
+<div class="justify-center flex flex-col items-center">
+  <h1 class="text-2xl font-bold">CS:GO News</h1>
+  <p class="text-sm">Latest news from the CS:GO blog</p>
+</div>
+
+<section class="flex items-center">
+  <ul class="flex flex-col items-center justify-center">
+    {news.map((newsItem, index) => {
+      const imageUrl = newsItem.contents.match(/(?<=\/3381077\/)[a-zA-Z0-9]+\.png/);
+      const imageSrc = imageUrl ? `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/clans/3381077/${imageUrl[0]}` : 'https://steamcdn-a.akamaihd.net/apps/csgo/blog/images/wallpaper_nologo.jpg';
+      
+      return (
+        <li class="flex flex-col rounded-md w-full border hover:-translate-y-1.5 hover:translate-x-1.5 duration-200 transform bg-white h-16 cursor-pointer drop-shadow-lg">
+          <a href={newsItem.url} class="flex" target="_blank">
+            <img src={imageSrc} class="w-16 h-16 object-cover rounded-md" alt="" />
+            <h1 class="p-4 font-mono">{newsItem.title}</h1>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+
